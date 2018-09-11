@@ -1,0 +1,108 @@
+var path = require('path')
+var utils = require('./utils')
+var config = require('../config')
+var vueLoaderConfig = require('./vue-loader.conf')
+// var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+module.exports = {
+  context: path.resolve(__dirname, '..'),
+  entry: {
+    app: './src/main.js'
+    // app: './src/main.js'
+  },
+  output: {
+    path: config.build.assetsRoot,
+    filename: '[name].js',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
+  },
+  resolve: {
+    extensions: ['.js', '.vue', '.json', '.styl'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('src')
+    },
+    modules: [
+      path.resolve(__dirname),
+      path.resolve(__dirname, '../node_modules')
+    ]
+  },
+  resolveLoader: {
+    modules: ['node_modules', path.resolve(__dirname, '../node_modules')]
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [resolve('src'), resolve('test')]
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+        }
+      }
+    ],
+    loaders: [
+      {
+        test: /\.styl$/,
+        loader: 'style-loader!css-loader!stylus-loader'
+      }
+    ]
+  },
+  plugins: [
+    // new FaviconsWebpackPlugin({
+    //   logo: resolve('src/assets/logo.png'),
+    //   icons: {
+    //     android: false,
+    //     appleIcon: false,
+    //     appleStartup: false,
+    //     coast: false,
+    //     favicons: true,
+    //     firefox: false,
+    //     opengraph: false,
+    //     twitter: false,
+    //     yandex: false,
+    //     windows: false
+    //   }
+    // })
+  ]
+}

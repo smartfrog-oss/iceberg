@@ -1,0 +1,30 @@
+{
+  "name": "iceberg",
+  "version": "0.1.0",
+  "description": "A GUI to run regression tests and other tests...",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "cd client && npm i && cd -",
+    "dev": "nodemon -e js --watch server --exec 'npm start'",
+    "dev:red-blue": "nodemon -e js --exec 'DB_USE=red-blue npm start'",
+    "start": "node server/server",
+    "test": "NODE_ENV=test PORT=4000 HOST=0.0.0.0 ava --verbose server/test/*.spec.js",
+    "test:watch": "npm test -- --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "blipp": "^2.3.0",
+    "glue": "^4.2.0",
+    "hapi": "^16.5.2",
+    "ryuk": "^1.0.0",
+    "waterline": "^0.11.11",
+    "waterline-joi": "^1.1.1",
+    "waterline-nedb": "^0.11.2",
+    "inert": "^4.2.1",
+    "firn": "^0.2.2"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0"
+  }
+}
